@@ -106,26 +106,6 @@ class Starship {
     }
 }
 
-class Exhaust {
-    constructor(x, y, sprite) {
-        this.x = x
-        this.y = y
-        this.sprite = sprite
-        this.frameCount = 0;
-        this.spriteFrame = 0;
-    }
-
-    update() {
-        if (++this.frameCount % 5 === 0) {
-            this.spriteFrame++
-        }
-    }
-
-    draw() {
-        ctx.drawImage(this.sprite, (this.spriteFrame % 4) * 32, 0, 32, 32, this.x, this.y, 32, 32)
-    }
-}
-
 class Bullet {
     constructor(x, y, speed) {
         this.x = x
