@@ -35,11 +35,11 @@ const starshipData = {
     },
 
     1: {
-        collRect: [34, 49, 92, 85],
+        collRect: [35, 49, 92, 78],
         exhaustPosX: 92,
         exhaustPosY: 48,
         spawnX: gameWidth,
-        spawnY: () => random(250, gameHeight - 250),
+        spawnY: () => random(40, gameHeight - 90),
         movePattern: null,
         speed: () => {
             return {
@@ -55,7 +55,7 @@ const starshipData = {
         exhaustPosX: 108,
         exhaustPosY: 48,
         spawnX: gameWidth,
-        spawnY: () => random(100, gameHeight - 100),
+        spawnY: () => random(50, gameHeight - 50),
         movePattern: function() { 
             if(Math.random() < 0.005) { 
                 this.vs = random(-180, -120) 
@@ -79,14 +79,15 @@ const starshipData = {
         exhaustPosX: 102,
         exhaustPosY: 48,
         spawnX: gameWidth,
-        spawnY: () => random(100, gameHeight - 100),
+        spawnY: () => random(200, gameHeight - 200),
         movePattern: function() {
             if(this.frameCount % 500 < 150) {
-                this.vx = -140
+                this.vx = this.baseSpeedX
                 this.vy = 0
+                this.canShoot = false
             } else {
-                this.vx = this.baseSpeedX * Math.sin(this.frameCount / 30)
-                this.vy = this.baseSpeedX * Math.cos(this.frameCount / 30)
+                this.vx = this.baseSpeedX * Math.sin(this.frameCount / this.randFactor)
+                this.vy = this.baseSpeedX * Math.cos(this.frameCount / this.randFactor)
             }
         },
         speed: () => {
@@ -99,7 +100,26 @@ const starshipData = {
     },
 
     4: {
-        rotation: Math.PI  
+        collRect: [11, 40, 125, 87],
+        exhaustPosX: 125,
+        exhaustPosY: 48,
+        spawnX: gameWidth,
+        spawnY: () => random(300, gameHeight - 300),
+        movePattern: function () {
+            this.vx = this.baseSpeedX
+            this.vy = this.baseSpeedY * Math.sin(this.frameCount / this.randFactor)
+            if (this.y < this.collRect[1] || this.y > gameHeight - this.sizeY) {
+                this.vy *= -1
+            }
+        },
+        speed: () => {
+            return {
+                x: -100,
+                y: 200
+            }
+        },
+
+        shootInterval: 1200
     },
 
     5: {
@@ -135,7 +155,7 @@ function gameLoop(timestamp) {
     })
 
     if (frameCount % 240 === 0 && enemies.length < 10) {
-        enemy = new Starship(random(1,4))
+        enemy = new Starship(random(1,5))
         enemies.push(enemy)
     }
 
